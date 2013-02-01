@@ -1,28 +1,23 @@
 #################################################################################
 #
-# (c) Copyright 2010 William Stein
+# (c) Copyright 2013 William Stein
 #
-#  This file is part of PSAGE
-#
-#  PSAGE is free software: you can redistribute it and/or modify
+#  This is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation, either version 3 of the License, or
+#  the Free Software Foundation, either version 2 of the License, or
 #  (at your option) any later version.
-# 
-#  PSAGE is distributed in the hope that it will be useful,
+#
+#  This is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
-# 
-#  You should have received a copy of the GNU General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #################################################################################
 
 
 # A setuptools-based build system.  See the comment before the line
 # "build_system.cythonize(ext_modules)" in setup.py about how this
-# code can probably be replaced by code in Cython soon. 
+# code can probably be replaced by code in Cython soon.
 
 import os, sys
 from setuptools import setup
@@ -81,7 +76,7 @@ def execute_list_of_commands_in_parallel(command_list, nthreads):
         command_list -- a list of pairs, consisting of a
              function to call and its argument
         nthreads -- integer; number of threads to use
-        
+
     OUTPUT:
         Executes the given list of commands, possibly in parallel,
         using nthreads threads.  Terminates setup.py with an exit code of 1
@@ -109,12 +104,12 @@ def number_of_threads():
         int
     """
     if hasattr(os, "sysconf") and os.sysconf_names.has_key("SC_NPROCESSORS_ONLN"): # Linux and Unix
-        n = os.sysconf("SC_NPROCESSORS_ONLN") 
+        n = os.sysconf("SC_NPROCESSORS_ONLN")
         if isinstance(n, int) and n > 0:
             return n
     try:
         return int(os.popen2("sysctl -n hw.ncpu")[1].read().strip())
-    except: 
+    except:
         return 0
 
 def execute_list_of_commands_in_serial(command_list):
@@ -122,10 +117,10 @@ def execute_list_of_commands_in_serial(command_list):
     INPUT:
         command_list -- a list of commands, each given as a pair
            of the form [command, argument].
-        
+
     OUTPUT:
         the given list of commands are all executed in serial
-    """    
+    """
     for f,v in command_list:
         r = f(v)
         if r != 0:
@@ -140,4 +135,3 @@ def cythonize(ext_modules):
         execute_list_of_commands_in_serial(cmds)
     else:
         execute_list_of_commands_in_parallel(cmds, n)
-

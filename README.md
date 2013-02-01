@@ -18,13 +18,26 @@ Installing
   anywhere you want, then type "sage setup.py develop".  You can then
   do "import ratmodform" then "ratmodform.[tab]" in Sage.
 
-  To build in place just do the following inside the ratmodform directory:
+
+  If you are using a Sage install that you can modify, just do the
+  following inside the ratmodform directory:
 
       sage setup.py develop
 
-  To force all modules to rebuild do:
+  NOTE:  To force all modules to rebuild: sage setup.py develop -ba
 
-      sage setup.py develop -ba
+  If you would like to install ratmodform and you are using a
+  system-wide Sage install that you can't modify, you can still do:
+
+    sage setup.py build_ext --inplace
+
+  NOTE: Using virtualenv would be nice here, but Sage doesn't include
+  virtualenv.
+
+  You will have to somewhere add your ratmodform directory to sys.path
+  to import this module from anywhere.
+
+  import ratmodform
 
 Testing
 -------
