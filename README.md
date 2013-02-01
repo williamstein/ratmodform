@@ -21,7 +21,7 @@ DOCTESTS:
 
   Do this to run 8 tests in parallel:
 
-    sage -tp 8 --force_lib src
+    sage -tp 8 --force_lib ratmodform
 
   In general, whenever you doctest in psage, do
 

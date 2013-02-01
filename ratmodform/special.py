@@ -1,21 +1,16 @@
 #################################################################################
 #
-# (c) Copyright 2011 William Stein
+# (c) Copyright 2013 William Stein
 #
-#  This file is part of PSAGE
-#
-#  PSAGE is free software: you can redistribute it and/or modify
+#  This is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation, either version 3 of the License, or
+#  the Free Software Foundation, either version 2 of the License, or
 #  (at your option) any later version.
-# 
-#  PSAGE is distributed in the hope that it will be useful,
+#
+#  This is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
-# 
-#  You should have received a copy of the GNU General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #################################################################################
 
@@ -29,7 +24,7 @@ from sage.rings.all import ZZ, QQ, PolynomialRing
 from sage.modular.all import eisenstein_series_qexp, ModularForms
 from sage.misc.all import cached_function, cputime, prod
 
-from psage.modform.rational.special_fast import (
+from special_fast import (
     _change_ring_ZZ, _evaluate_series_at_power_of_gen,
     Integer_list_to_polynomial)
 
@@ -45,7 +40,7 @@ def degen(h, n):
 
     EXAMPLES::
 
-        sage: from psage.modform.rational.special import degen
+        sage: from ratmodform.special import degen
         sage: R.<q> = QQ[[]]
         sage: f = 2/3 + 3*q + 14*q^2 + O(q^3)
         sage: degen(f,2)
@@ -55,7 +50,7 @@ def degen(h, n):
         return h
     return _evaluate_series_at_power_of_gen(h,n,True)
 
-#############################################################    
+#############################################################
 
 
 @cached_function
@@ -69,13 +64,13 @@ def cached_eisenstein_series_qexp(k, prec, verbose=False):
         - k -- even positive integer
         - prec -- positive integer
         - verbose -- bool (default: False); if True, print timing information
-    
+
     OUTPUT:
         - power series over the rational numbers
 
     EXAMPLES::
 
-        sage: from psage.modform.rational.special import cached_eisenstein_series_qexp
+        sage: from ratmodform.special import cached_eisenstein_series_qexp
         sage: cached_eisenstein_series_qexp(4, 10)
         1/240 + q + 9*q^2 + 28*q^3 + 73*q^4 + 126*q^5 + 252*q^6 + 344*q^7 + 585*q^8 + 757*q^9 + O(q^10)
         sage: cached_eisenstein_series_qexp(4, 5, verbose=True)
@@ -106,7 +101,7 @@ def eis_qexp(k, t, prec, verbose=False):
 
     EXAMPLES::
 
-        sage: from psage.modform.rational.special import eis_qexp
+        sage: from ratmodform.special import eis_qexp
         sage: eis_qexp(2, 1, 8)   # output is 0, since holomorphic
         O(q^8)
         sage: eis_qexp(2, 3, 8)
@@ -156,7 +151,7 @@ def eisenstein_gens(N, k, prec, verbose=False):
 
     EXAMPLES::
 
-        sage: from psage.modform.rational.special import eisenstein_gens
+        sage: from ratmodform.special import eisenstein_gens
         sage: eisenstein_gens(5,4,6)
         [(1, 2, O(q^6)), (5, 2, 1/6 + q + 3*q^2 + 4*q^3 + 7*q^4 + q^5 + O(q^6)), (1, 4, 1/240 + q + 9*q^2 + 28*q^3 + 73*q^4 + 126*q^5 + O(q^6)), (5, 4, 1/240 + q^5 + O(q^6))]
         sage: eisenstein_gens(11,2,6)
@@ -187,27 +182,27 @@ class EisensteinMonomial(object):
         """
         INPUT:
             - v -- a list of triples (k,t,n) that corresponds to E_k(q^t)^n.
-        
+
         EXAMPLES::
 
-            sage: from psage.modform.rational.special import EisensteinMonomial
+            sage: from ratmodform.special import EisensteinMonomial
             sage: e = EisensteinMonomial([(5,4,2), (5,6,3)]); e
             E4(q^5)^2*E6(q^5)^3
             sage: type(e)
-            <class 'psage.modform.rational.special.EisensteinMonomial'>
+            <class 'ratmodform.special.EisensteinMonomial'>
         """
         self._v = v
 
     def __repr__(self):
         """
         EXAMPLES::
-        
-            sage: from psage.modform.rational.special import EisensteinMonomial
+
+            sage: from ratmodform.special import EisensteinMonomial
             sage: e = EisensteinMonomial([(5,4,12), (5,6,3)]); e.__repr__()
             'E4(q^5)^12*E6(q^5)^3'
         """
         return '*'.join(['E%s%s(q^%s)^%s'%(k,'^*' if k==2 else '', t,e) for t,k,e in self._v])
-    
+
     def qexp(self, prec, verbose=False):
         """
         The q-expansion of a monomial in Eisenstein series.
@@ -218,14 +213,14 @@ class EisensteinMonomial(object):
 
         EXAMPLES::
 
-            sage: from psage.modform.rational.special import EisensteinMonomial
+            sage: from ratmodform.special import EisensteinMonomial
             sage: e = EisensteinMonomial([(5,4,2), (5,6,3)])
             sage: e.qexp(11)
             -1/7374186086400 + 43/307257753600*q^5 - 671/102419251200*q^10 + O(q^11)
             sage: E4 = eisenstein_series_qexp(4,11); q = E4.parent().gen()
             sage: E6 = eisenstein_series_qexp(6,11)
             sage: (E4(q^5)^2 * E6(q^5)^3).add_bigoh(11)
-            -1/7374186086400 + 43/307257753600*q^5 - 671/102419251200*q^10 + O(q^11)        
+            -1/7374186086400 + 43/307257753600*q^5 - 671/102419251200*q^10 + O(q^11)
         """
         z = [eis_qexp(k, t, prec, verbose=verbose)**e for t,k,e in self._v]
         if verbose: print "Arithmetic to compute %s +O(q^%s)"%(self, prec); sys.stdout.flush(); t=cputime()
@@ -250,7 +245,7 @@ def _monomials(v, n, i):
 
     EXAMPLES::
 
-        sage: from psage.modform.rational.special import _monomials
+        sage: from ratmodform.special import _monomials
         sage: R.<x,y> = QQ[]
         sage: _monomials([(x,2),(y,3)], 6, 0)
         [y^2, x^3]
@@ -293,7 +288,7 @@ def monomials(v, n):
 
     EXAMPLES::
 
-        sage: from psage.modform.rational.special import monomials
+        sage: from ratmodform.special import monomials
         sage: R.<x,y> = QQ[]
         sage: monomials([(x,2),(y,3)], 6)
         [y^2, x^3]
@@ -303,7 +298,7 @@ def monomials(v, n):
     if len(v) == 0:
         return []
     return _monomials(v, n, 0)
-        
+
 
 def eisenstein_basis(N, k, verbose=False):
     r"""
@@ -323,7 +318,7 @@ def eisenstein_basis(N, k, verbose=False):
 
     EXAMPLES::
 
-        sage: from psage.modform.rational.special import eisenstein_basis
+        sage: from ratmodform.special import eisenstein_basis
         sage: eisenstein_basis(5,4)
         ([E4(q^5)^1, E4(q^1)^1, E2^*(q^5)^2], 3)
         sage: eisenstein_basis(11,2,verbose=True)  # warning below because of verbose
@@ -339,12 +334,12 @@ def eisenstein_basis(N, k, verbose=False):
     # determine them, until we span space.
     M = ModularForms(N, k)
     prec = M.echelon_basis()[-1].valuation() + 1
-    
+
     gens = eisenstein_gens(N, k, prec)
     R = PolynomialRing(ZZ, len(gens), ['E%sq%s'%(g[1],g[0]) for g in gens])
     z = [(R.gen(i), g[1]) for i, g in enumerate(gens)]
     m = monomials(z, k)
-    
+
     A = QQ**prec
     V = A.zero_subspace()
     E = []
@@ -361,16 +356,16 @@ def eisenstein_basis(N, k, verbose=False):
 
     if verbose: print "Warning -- not enough series."
     return E, prec
-    
+
 
 class FastModularForm(object):
     """
     EXAMPLES::
 
-        sage: from psage.modform.rational.special import FastModularForm
+        sage: from ratmodform.special import FastModularForm
 
     Level 5, weight 4::
-    
+
         sage: f = FastModularForm(CuspForms(5,4).0); f
         (-250/3)*E4(q^5)^1 + (-10/3)*E4(q^1)^1 + (13)*E2^*(q^5)^2
         sage: f.qexp(10)
@@ -401,11 +396,11 @@ class FastModularForm(object):
 
         Level 3, weight 6::
 
-            sage: from psage.modform.rational.special import FastModularForm
+            sage: from ratmodform.special import FastModularForm
             sage: f = CuspForms(3,6).0; g = FastModularForm(f); g
             (549/10)*E6(q^3)^1 + (-3/10)*E6(q^1)^1 + (312)*E2^*(q^3)^1*E4(q^3)^1
             sage: type(g)
-            <class 'psage.modform.rational.special.FastModularForm'>            
+            <class 'ratmodform.special.FastModularForm'>
         """
         import sage.modular.modform.element
         if not isinstance(f, sage.modular.modform.element.ModularForm_abstract):
@@ -414,7 +409,7 @@ class FastModularForm(object):
         if not chi or not chi.is_trivial():
             raise ValueError, "form must trivial character"
         self._f = f
-        
+
         N = f.level()
         k = f.weight()
         B, prec = eisenstein_basis(N, k, verbose=verbose)
@@ -427,7 +422,7 @@ class FastModularForm(object):
         self._verbose = verbose
 
         assert self.qexp(prec) == f.qexp(prec), "bug -- q-expansions don't match"
-        
+
     def qexp(self, prec):
         """
         Return the q-expansion of this fast modular form to the given
@@ -435,7 +430,7 @@ class FastModularForm(object):
 
         EXAMPLES::
 
-            sage: from psage.modform.rational.special import FastModularForm
+            sage: from ratmodform.special import FastModularForm
             sage: f = FastModularForm(CuspForms(5,4).0); f
             (-250/3)*E4(q^5)^1 + (-10/3)*E4(q^1)^1 + (13)*E2^*(q^5)^2
             sage: f.qexp(10)
@@ -443,21 +438,21 @@ class FastModularForm(object):
             sage: g = f.modular_form(); g
             q - 4*q^2 + 2*q^3 + 8*q^4 - 5*q^5 + O(q^6)
             sage: g.qexp(10)
-            q - 4*q^2 + 2*q^3 + 8*q^4 - 5*q^5 - 8*q^6 + 6*q^7 - 23*q^9 + O(q^10)        
+            q - 4*q^2 + 2*q^3 + 8*q^4 - 5*q^5 - 8*q^6 + 6*q^7 - 23*q^9 + O(q^10)
         """
         f = sum(c*self._basis[i].qexp(prec, verbose=self._verbose)
                 for i, c in enumerate(self._coordinates) if c)
         return ZZ[['q']](_change_ring_ZZ(f.polynomial()), prec)
 
     q_expansion = qexp
-        
+
     def modular_form(self):
         """
         Return the underlying modular form object.
 
         EXAMPLES::
 
-            sage: from psage.modform.rational.special import FastModularForm
+            sage: from ratmodform.special import FastModularForm
             sage: f = FastModularForm(CuspForms(5,4).0); f
             (-250/3)*E4(q^5)^1 + (-10/3)*E4(q^1)^1 + (13)*E2^*(q^5)^2
             sage: f.qexp(10)
@@ -473,7 +468,7 @@ class FastModularForm(object):
 
         EXAMPLES::
 
-            sage: from psage.modform.rational.special import FastModularForm
+            sage: from ratmodform.special import FastModularForm
             sage: f = FastModularForm(CuspForms(5,4).0)
             sage: f.__repr__()
             '(-250/3)*E4(q^5)^1 + (-10/3)*E4(q^1)^1 + (13)*E2^*(q^5)^2'
@@ -486,10 +481,12 @@ class FastModularForm(object):
 
 
 #####################################################
-# CM forms    
+# CM forms
 #####################################################
 
 from sage.all import fast_callable, prime_range, SR
+
+#TODO
 from psage.ellcurve.lseries.helper import extend_multiplicatively_generic
 
 def elliptic_cm_form(E, n, prec, aplist_only=False, anlist_only=False):
@@ -509,7 +506,7 @@ def elliptic_cm_form(E, n, prec, aplist_only=False, anlist_only=False):
 
     EXAMPLES::
 
-        sage: from psage.modform.rational.special import elliptic_cm_form
+        sage: from ratmodform.special import elliptic_cm_form
         sage: f = CuspForms(121,4).newforms(names='a')[0]; f
         q + 8*q^3 - 8*q^4 + 18*q^5 + O(q^6)
         sage: E = EllipticCurve('121b')
@@ -532,12 +529,12 @@ def elliptic_cm_form(E, n, prec, aplist_only=False, anlist_only=False):
         return [ZZ(0)]
     elif prec <= 2:
         return [ZZ(0), ZZ(1)]
-    
+
     # Derive formula for sum of n-th powers of roots
     a,p,T = SR.var('a,p,T')
     roots = (T**2 - a*T + p).roots(multiplicities=False)
     s = sum(alpha**n for alpha in roots).simplify_full()
-    
+
     # Create fast callable expression from formula
     g = fast_callable(s.polynomial(ZZ))
 
@@ -582,7 +579,3 @@ def elliptic_cm_form(E, n, prec, aplist_only=False, anlist_only=False):
 
     f = Integer_list_to_polynomial(anlist, 'q')
     return ZZ[['q']](f, prec=prec)
-
-    
-    
-                    

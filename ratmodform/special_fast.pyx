@@ -1,21 +1,16 @@
 #################################################################################
 #
-# (c) Copyright 2011 William Stein
+# (c) Copyright 2013 William Stein
 #
-#  This file is part of PSAGE
-#
-#  PSAGE is free software: you can redistribute it and/or modify
+#  This is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation, either version 3 of the License, or
+#  the Free Software Foundation, either version 2 of the License, or
 #  (at your option) any later version.
-# 
-#  PSAGE is distributed in the hope that it will be useful,
+#
+#  This is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
-# 
-#  You should have received a copy of the GNU General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #################################################################################
 
@@ -46,8 +41,8 @@ from sage.rings.all import ZZ
 
 def _change_ring_ZZ(Polynomial_rational_flint f):
     """
-    Return the polynomial of numerators of coefficients of f.  
-    
+    Return the polynomial of numerators of coefficients of f.
+
     INPUT:
         - f -- a polynomial over the rational numbers with no denominators
     OUTPUT:
@@ -55,7 +50,7 @@ def _change_ring_ZZ(Polynomial_rational_flint f):
 
     EXAMPLES::
 
-        sage: import psage.modform.rational.special_fast as s
+        sage: import ratmodform.special_fast as s
         sage: R.<q> = QQ[]
         sage: f = 3 + q + 17*q^2 - 4*q^3 - 2*q^5
         sage: g = s._change_ring_ZZ(f); g
@@ -86,13 +81,13 @@ def _evaluate_poly_at_power_of_gen(Polynomial_rational_flint f, unsigned long n,
           it has coefficients up to deg(f) and possibly slightly more,
           e.g., this is natural if we are interested in the power
           series f+O(x^(d+1)).
-          
+
     OUTPUT:
         - a polynomial over the rational numbers
 
     EXAMPLES::
 
-        sage: import psage.modform.rational.special_fast as s
+        sage: import ratmodform.special_fast as s
         sage: R.<q> = QQ[]
         sage: f = 2/3 + q + 17*q^2 - 4*q^3 - 2*q^5
         sage: s._evaluate_poly_at_power_of_gen(f, 2, False)
@@ -118,28 +113,26 @@ def _evaluate_series_at_power_of_gen(h, unsigned long n, bint truncate):
     INPUT:
         - h -- a power series over the rational numbers
         - n -- a positive integer
-        - if  
-        
+        - if
+
     OUTPUT:
         - a power series over the rational numbers
 
     EXAMPLES::
-    
-        sage: import psage.modform.rational.special_fast as s
+
+        sage: import ratmodform.special_fast as s
         sage: R.<q> = QQ[[]]
         sage: f = 2/3 + 3*q + 14*q^2 + O(q^3)
         sage: s._evaluate_series_at_power_of_gen(f, 2, True)
         2/3 + 3*q^2 + O(q^3)
         sage: s._evaluate_series_at_power_of_gen(f, 2, False)
-        2/3 + 3*q^2 + 14*q^4 + O(q^5)    
+        2/3 + 3*q^2 + 14*q^4 + O(q^5)
     """
     # Return h(q^n) truncated to the precision of h massively quicker
     # than writing "h(q^n)" in Sage.
     f = _evaluate_poly_at_power_of_gen(h.polynomial(), n, truncate=truncate)
     prec = h.prec() if truncate else (h.prec()-1) * n + 1
     return h.parent()(f, prec)
-
-
 
 def Integer_list_to_polynomial(list v, var='q'):
     cdef Polynomial_integer_dense_flint res = ZZ[var](0)
@@ -149,4 +142,3 @@ def Integer_list_to_polynomial(list v, var='q'):
         a = v[i]
         fmpz_poly_set_coeff_mpz(res.__poly, i, a.value)
     return res
-    
