@@ -1,15 +1,24 @@
 ratmodform
 ==========
 
-Fast research-oriented code for computing with rational modular forms. Depends on Sage.
+Fast research-oriented code for computing with rational modular
+forms. Depends on [Sage](http://sagemath.org).
 
    https://github.com/williamstein/ratmodform
 
 Released under GPLv2+.
 
-BUILDING:
+Installing
+----------
 
-  To build in place just do:
+  Type
+
+     git clone https://github.com/williamstein/ratmodform
+
+  anywhere you want, then type "sage setup.py develop".  You can then
+  do "import ratmodform" then "ratmodform.[tab]" in Sage.
+
+  To build in place just do the following inside the ratmodform directory:
 
       sage setup.py develop
 
@@ -17,7 +26,8 @@ BUILDING:
 
       sage setup.py develop -ba
 
-DOCTESTS:
+Testing
+-------
 
   Do this to run 8 tests in parallel:
 
