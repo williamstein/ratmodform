@@ -477,17 +477,13 @@ class FastModularForm(object):
 
 
 
-
-
-
 #####################################################
 # CM forms
 #####################################################
 
 from sage.all import fast_callable, prime_range, SR
 
-#TODO
-from psage.ellcurve.lseries.helper import extend_multiplicatively_generic
+from misc_list import extend_multiplicatively_generic
 
 def elliptic_cm_form(E, n, prec, aplist_only=False, anlist_only=False):
     """

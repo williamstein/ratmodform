@@ -62,6 +62,7 @@ numpy_include_dirs = [os.path.join(SAGE_LOCAL,
                                    'lib/python/site-packages/numpy/core/include')]
 
 ext_modules = [
+    Extension("ratmodform.misc_list", ["ratmodform/misc_list.pyx"]),
 
     Extension("ratmodform.special_fast",
               ["ratmodform/special_fast.pyx", SAGE_ROOT + "/devel/sage/sage/libs/flint/fmpq_poly.c"],
